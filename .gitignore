@@ -1,0 +1,11 @@
+*.log
+*.out
+*.pid
+/pids
+/logs
+/node_modules
+/bower_components
+!/config/*.example
+/config/*.yaml
+/doc/build
+/coverage
