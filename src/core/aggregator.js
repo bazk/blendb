@@ -20,9 +20,125 @@
 
 'use strict';
 
+const async = require('async');
 const mongo = require('core/mongo');
+const serializer = require('util/serializer');
+const hash = require('util/hash');
 
 class Aggregator {
+    removeAggregate(id, callback) {
+        const aggregates = mongo.db.collection('meta.aggregates');
+        aggregates.findOneAndDelete({ _id: id }, (err) => {
+            if (err) {
+                callback(err);
+                return;
+            }
+
+            let aggr = mongo.db.collection('aggr.' + id);
+            aggr.remove({}, callback);
+        });
+    }
+
+    createAggregate(dimensions, metrics, callback) {
+        const aggregates = mongo.db.collection('meta.aggregates');
+
+        let doc = {
+            _id: hash.sha1(serializer.dump(dimensions) +
+                           serializer.dump(metrics)),
+            dimensions: dimensions,
+            metrics: metrics
+        };
+
+        aggregates.insert(doc, (err) => {
+            if (err) {
+                callback(err);
+                return;
+            }
+
+            callback(null, doc);
+        });
+    }
+
+    rebuildBaseAggregates(callback) {
+        this.cleanAggregates((err) => {
+            if (err) {
+                callback(err);
+                return;
+            }
+
+            this.buildBaseAggregates(callback);
+        });
+    }
+
+    buildBaseAggregates(callback) {
+        let classes = mongo.db.collection('meta.classes');
+
+        classes.find({}).toArray((err, result) => {
+            if (err) {
+                callback(err);
+                return;
+            }
+
+            async.map(result, (cls, cb) => { this.buildBaseAggregateFromClass(cls, cb); }, (err) => {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+
+                return callback(null);
+            });
+        });
+    }
+
+    buildBaseAggregateFromClass(cls, callback) {
+        this.createAggregate(cls.dimensions, cls.metrics, (err, aggr) => {
+            const raw = mongo.db.collection('raw.' + cls.name);
+            const aggrData = mongo.db.collection('aggr.' + aggr._id);
+
+            const functions = serializer.load(cls.functions);
+
+            raw.find({}).forEach((doc) => {
+                let data = {
+                    dimensions: functions.extractDimensions.apply(doc),
+                    metrics: functions.extractMetrics.apply(doc)
+                };
+
+                // TODO: aggrData.insert(data);
+            }, callback);
+        });
+    }
+
+    cleanAggregates(callback) {
+        let aggregates = mongo.db.collection('meta.aggregates');
+
+        aggregates.find({}).toArray((err, result) => {
+            if (err) {
+                callback(err);
+                return;
+            }
+
+            async.map(result, (aggr, callback) => {
+                let aggrCol = mongo.db.collection('aggr.' + aggr.name);
+                aggrCol.remove({}, (err) => {
+                    if (err) {
+                        callback(err);
+                        return;
+                    }
+
+                    aggregates.remove({ _id: aggr._id }, callback);
+                });
+            },
+            (err) => {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+
+                callback(null);
+            });
+        });
+    }
+
     query(metrics, dimensions, callback) {
         this.findClosestAggregate(metrics, dimensions, (err, aggr) => {
             if (err) {
@@ -35,7 +151,7 @@ class Aggregator {
     }
 
     findClosestAggregate(metrics, dimensions, callback) {
-        var aggregates = mongo.db.collection('meta.aggregates');
+        let aggregates = mongo.db.collection('meta.aggregates');
 
         aggregates.find({
             metrics: {
@@ -44,7 +160,7 @@ class Aggregator {
             dimensions: {
                 $all: dimensions
             }
-        }).toArray(function(err, result) {
+        }).toArray((err, result) => {
             if (err) {
                 callback(err);
                 return;
