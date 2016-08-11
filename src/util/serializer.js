@@ -24,7 +24,9 @@ class Serializer {
     dump(obj) {
         return JSON.stringify(obj, (key, value) => {
             if (typeof value === 'function') {
-                return value.toString();
+                return value.toString()
+                    .replace(/[\n\r\t]/g, '')
+                    .replace(/ +/g, ' ');
             }
 
             return value;
@@ -38,8 +40,8 @@ class Serializer {
             }
 
             if (typeof value === 'string') {
-                let rfunc = /function[^\(]*\(([^\)]*)\)[^\{]*{([^\}]*)\}/;
-                let match = value.match(rfunc);
+                let rfunc = /function[^\(]*\(([^\)]*)\)[^\{]*\{(.*)\}[^\}]*$/;
+                let match = value.replace(/\n/g, '').match(rfunc);
 
                 if (match) {
                     let args = match[1].split(',')
