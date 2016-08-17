@@ -1,6 +1,7 @@
 *.log
 *.out
 *.pid
+/.trash
 /pids
 /logs
 /node_modules
