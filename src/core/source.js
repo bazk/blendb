@@ -20,31 +20,20 @@
 
 'use strict';
 
-const crypto = require('crypto');
+class Source {
+    constructor(name, options) {
+        this.name = name;
 
-class Hash {
-    sha1(...objects) {
-        let hash = crypto.createHash('sha1');
+        this.data = [];
+    }
 
-        objects
-            .map((obj) => {
-                switch (typeof obj) {
-                    case 'string':
-                        return obj;
-                    case 'object':
-                        return JSON.stringify(obj);
-                    default:
-                        throw new TypeError(typeof obj +
-                            ' cannot be hashed');
-                }
-            })
-            .sort()
-            .map((objStr) => {
-                hash.update(objStr);
-            });
+    push(doc) {
+        this.data.push(doc);
+    }
 
-        return hash.digest('hex');
+    forEach(callback) {
+        this.data.forEach(callback);
     }
 }
 
-module.exports = new Hash();
+module.exports = Source;

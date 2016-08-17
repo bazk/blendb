@@ -20,31 +20,21 @@
 
 'use strict';
 
-const crypto = require('crypto');
+class Aggregate {
+    constructor(metrics, dimensions, options) {
+        this.metrics = metrics;
+        this.dimensions = dimensions;
 
-class Hash {
-    sha1(...objects) {
-        let hash = crypto.createHash('sha1');
+        this.data = [];
+    }
 
-        objects
-            .map((obj) => {
-                switch (typeof obj) {
-                    case 'string':
-                        return obj;
-                    case 'object':
-                        return JSON.stringify(obj);
-                    default:
-                        throw new TypeError(typeof obj +
-                            ' cannot be hashed');
-                }
-            })
-            .sort()
-            .map((objStr) => {
-                hash.update(objStr);
-            });
+    push(data) {
+        this.data.push(data);
+    }
 
-        return hash.digest('hex');
+    truncate() {
+        this.data = [];
     }
 }
 
-module.exports = new Hash();
+module.exports = Aggregate;
