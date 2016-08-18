@@ -22,13 +22,13 @@ import * as express from "express";
 
 export class CollectCtrl {
     static write(req: express.Request, res: express.Response, next: express.NextFunction) {
-        if ('_id' in req.body) {
+        if ("_id" in req.body) {
             res.status(400)
-                .json({ message: 'Property named \'_id\' is protected.' });
+                .json({ message: "Property named \"_id\" is protected." });
             return;
         }
 
         res.status(500)
-            .json({ message: 'Error while writing to the database.' });
+            .json({ message: "Error while writing to the database." });
     }
 }

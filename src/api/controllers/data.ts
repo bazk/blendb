@@ -22,10 +22,10 @@ import * as express from "express";
 
 export class DataCtrl {
     static read(req: express.Request, res: express.Response, next: express.NextFunction) {
-        let metrics = req.query.metrics.split(',');
-        let dimensions = req.query.dimensions.split(',');
+        let metrics = req.query.metrics.split(",");
+        let dimensions = req.query.dimensions.split(",");
 
-        res.status(500).json({ message: 'Query execution failed ' +
-            'because of an unknown error.' });
+        res.status(500).json({ message: "Query execution failed " +
+            "because of an unknown error." });
     }
 }

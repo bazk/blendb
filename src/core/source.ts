@@ -18,11 +18,9 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
 export class Source {
-    name: string;
-    data: any[];
+    public name: string;
+    private data: any[];
 
     constructor(name: string, options: any) {
         this.name = name;
@@ -30,11 +28,11 @@ export class Source {
         this.data = [];
     }
 
-    push(doc: any) {
+    public push(doc: any) {
         this.data.push(doc);
     }
 
-    forEach(callback: Function) {
+    public forEach(callback: Function) {
         this.data.forEach((value: any, index: number, array: any[]) => {
             callback(value);
         });

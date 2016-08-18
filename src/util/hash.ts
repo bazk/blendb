@@ -18,24 +18,22 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
-import crypto = require('crypto');
+import crypto = require("crypto");
 
 export class Hash {
-    static sha1(...objects: any[]): string {
-        let hash = crypto.createHash('sha1');
+    public static sha1(...objects: any[]): string {
+        let hash = crypto.createHash("sha1");
 
         objects
             .map((obj) => {
                 switch (typeof obj) {
-                    case 'string':
+                    case "string":
                         return obj;
-                    case 'object':
+                    case "object":
                         return JSON.stringify(obj);
                     default:
                         throw new TypeError(typeof obj +
-                            ' cannot be hashed');
+                            " cannot be hashed");
                 }
             })
             .sort()
@@ -43,6 +41,6 @@ export class Hash {
                 hash.update(objStr);
             });
 
-        return hash.digest('hex');
+        return hash.digest("hex");
     }
 }

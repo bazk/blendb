@@ -18,18 +18,16 @@
  * along with blend.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
+import { Hash } from "../util/hash";
 
-import { Hash } from '../util/hash';
-
-import { Source } from './source';
-import { Transformer } from './transformer';
-import { Aggregate } from './aggregate';
+import { Source } from "./source";
+import { Transformer } from "./transformer";
+import { Aggregate } from "./aggregate";
 
 export class Server {
-    sources: Map<string,Source>;
-    transformers: Map<string,Transformer>;
-    aggregates: Map<string,Aggregate>;
+    private sources: Map<string, Source>;
+    private transformers: Map<string, Transformer>;
+    private aggregates: Map<string, Aggregate>;
 
     constructor() {
         this.sources = new Map();
@@ -37,7 +35,7 @@ export class Server {
         this.aggregates = new Map();
     }
 
-    source(name: string, options?: any) {
+    public source(name: string, options?: any) {
         if (this.sources.has(name)) {
             return this.sources.get(name);
         }
@@ -48,7 +46,7 @@ export class Server {
         }
     }
 
-    transformer(name: string, options?: any) {
+    public transformer(name: string, options?: any) {
         if (this.transformers.has(name)) {
             return this.transformers.get(name);
         }
@@ -59,7 +57,7 @@ export class Server {
         }
     }
 
-    aggregate(metrics: string[], dimensions: string[], options?: any) {
+    public aggregate(metrics: string[], dimensions: string[], options?: any) {
         const id = Hash.sha1(metrics.sort(), dimensions.sort());
 
         if (this.aggregates.has(id)) {
@@ -72,7 +70,7 @@ export class Server {
         }
     }
 
-    process() {
+    public process() {
         this.transformers.forEach((transformer: Transformer) => {
             const source = this.source(transformer.source);
             const aggr = this.aggregate(transformer.metrics,
@@ -90,7 +88,5 @@ export class Server {
             //     .pipe(transformer.stream());
             //     .pipe(aggregate.stream());
         });
-
-        console.log(this.aggregates);
     }
 }

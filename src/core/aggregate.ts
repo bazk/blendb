@@ -19,9 +19,9 @@
  */
 
 export class Aggregate {
-    metrics: string[];
-    dimensions: string[];
-    data: any[];
+    public metrics: string[];
+    public dimensions: string[];
+    private data: any[];
 
     constructor(metrics: string[], dimensions: string[], options?: any) {
         this.metrics = metrics;
@@ -30,11 +30,11 @@ export class Aggregate {
         this.data = [];
     }
 
-    push(data: any) {
+    public push(data: any) {
         this.data.push(data);
     }
 
-    truncate() {
+    public truncate() {
         this.data = [];
     }
 }

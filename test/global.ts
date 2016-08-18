@@ -18,4 +18,4 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = "test";

@@ -18,13 +18,13 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const osprey = require('osprey');
+const osprey = require("osprey");
 
 // import controllers
-import { DataCtrl } from './controllers/data';
-import { CollectCtrl } from './controllers/collect';
+import { DataCtrl } from "./controllers/data";
+import { CollectCtrl } from "./controllers/collect";
 
 export const router = osprey.Router();
 
-router.get('/data', DataCtrl.read);
-router.post('/collect/{class}', CollectCtrl.write);
+router.get("/data", DataCtrl.read);
+router.post("/collect/{class}", CollectCtrl.write);

@@ -18,52 +18,52 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { expect } from 'chai';
+import { expect } from "chai";
 
-import { Hash } from './hash';
+import { Hash } from "./hash";
 
-describe('hash utility library', () => {
-    it('should generate a sha1 hash for a collection of objects', () => {
-        let h = Hash.sha1('test', { obj: 'test' }, ['list', 'of', 'things']);
+describe("hash utility library", () => {
+    it("should generate a sha1 hash for a collection of objects", () => {
+        let h = Hash.sha1("test", { obj: "test" }, ["list", "of", "things"]);
 
-        expect(h).to.be.a('string');
+        expect(h).to.be.a("string");
         expect(h).to.not.be.empty;
     });
 
-    it('should generate the same hash for the same input', () => {
-        let h1 = Hash.sha1('test', { obj: 'test' }, ['list', 'of', 'things']);
-        let h2 = Hash.sha1('test', { obj: 'test' }, ['list', 'of', 'things']);
+    it("should generate the same hash for the same input", () => {
+        let h1 = Hash.sha1("test", { obj: "test" }, ["list", "of", "things"]);
+        let h2 = Hash.sha1("test", { obj: "test" }, ["list", "of", "things"]);
 
-        expect(h1).to.be.a('string');
-        expect(h2).to.be.a('string');
+        expect(h1).to.be.a("string");
+        expect(h2).to.be.a("string");
         expect(h1).to.be.equal(h2);
     });
 
-    it('should generate the same hash for different order of input', () => {
-        let h1 = Hash.sha1('test', { obj: 'test' }, ['list', 'of', 'things']);
-        let h2 = Hash.sha1('test', ['list', 'of', 'things'], { obj: 'test' });
+    it("should generate the same hash for different order of input", () => {
+        let h1 = Hash.sha1("test", { obj: "test" }, ["list", "of", "things"]);
+        let h2 = Hash.sha1("test", ["list", "of", "things"], { obj: "test" });
 
-        expect(h1).to.be.a('string');
-        expect(h2).to.be.a('string');
+        expect(h1).to.be.a("string");
+        expect(h2).to.be.a("string");
         expect(h1).to.be.equal(h2);
     });
 
-    it('should not generate the same hash for distinct input', () => {
-        let h1 = Hash.sha1('test', { obj: 'test' }, ['list', 'of', 'things']);
-        let h2 = Hash.sha1('test', { obj: 'test', x: true },
-            ['list', 'of', 'things']);
+    it("should not generate the same hash for distinct input", () => {
+        let h1 = Hash.sha1("test", { obj: "test" }, ["list", "of", "things"]);
+        let h2 = Hash.sha1("test", { obj: "test", x: true },
+            ["list", "of", "things"]);
 
-        expect(h1).to.be.a('string');
-        expect(h2).to.be.a('string');
+        expect(h1).to.be.a("string");
+        expect(h2).to.be.a("string");
         expect(h1).to.not.be.equal(h2);
     });
 
-    it('should not generate the same hash for different order in deep lists', () => {
-        let h1 = Hash.sha1('test', { obj: 'test' }, ['list', 'of', 'things']);
-        let h2 = Hash.sha1('test', { obj: 'test' }, ['of', 'list', 'things']);
+    it("should not generate the same hash for different order in deep lists", () => {
+        let h1 = Hash.sha1("test", { obj: "test" }, ["list", "of", "things"]);
+        let h2 = Hash.sha1("test", { obj: "test" }, ["of", "list", "things"]);
 
-        expect(h1).to.be.a('string');
-        expect(h2).to.be.a('string');
+        expect(h1).to.be.a("string");
+        expect(h2).to.be.a("string");
         expect(h1).to.not.be.equal(h2);
     });
 });

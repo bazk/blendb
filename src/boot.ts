@@ -20,21 +20,21 @@
  */
 
 // external libraries
-import express = require('express');
-import path = require('path');
-const osprey = require('osprey');
-const ramlParser = require('raml-parser');
+import express = require("express");
+import path = require("path");
+const osprey = require("osprey");
+const ramlParser = require("raml-parser");
 
 // load router
-import { router } from './api/router-v1';
+import { router } from "./api/router-v1";
 
 // create a new express app
 const app = module.exports = express();
 
 // parse the RAML spec and load osprey middleware
-ramlParser.loadFile('specs/blendb-api-v1.raml')
+ramlParser.loadFile("specs/blendb-api-v1.raml")
     .then((raml: any) => {
-        app.use('/v1',
+        app.use("/v1",
             osprey.security(raml),
             osprey.server(raml),
             router);
@@ -43,8 +43,8 @@ ramlParser.loadFile('specs/blendb-api-v1.raml')
             let port = process.env.PORT || 3000;
             app.listen(port);
 
-            if (app.get('env') === 'development') {
-                console.log('Server listening on port ' + port + '.');
+            if (app.get("env") === "development") {
+                console.log("Server listening on port " + port + ".");
             }
         }
         else {
@@ -53,6 +53,6 @@ ramlParser.loadFile('specs/blendb-api-v1.raml')
         }
     },
     (err: any) => {
-        console.error('RAML Parsing Error: ' + err.message);
+        console.error("RAML Parsing Error: " + err.message);
         process.exit(1);
     });

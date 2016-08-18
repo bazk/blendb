@@ -7,7 +7,8 @@
     "prestart": "tsc",
     "start": "node build/src/boot",
     "pretest": "tsc",
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "tslint -s node_modules/tslint-stylish -t stylish src/**/*.ts test/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,8 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "tslint": "^3.14.0",
+    "tslint-stylish": "^2.1.0-beta"
   }
 }

@@ -18,13 +18,11 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
 export class Transformer {
-    source: string;
-    metrics: string[];
-    dimensions: string[];
-    extractors: any;
+    public source: string;
+    public metrics: string[];
+    public dimensions: string[];
+    private extractors: any;
 
     constructor(name: string, options: any) {
         this.source = options.source || null;
@@ -36,11 +34,11 @@ export class Transformer {
         };
     }
 
-    extractMetrics(doc: any) {
+    public extractMetrics(doc: any) {
         return this.extractors.metrics(doc);
     }
 
-    extractDimensions(doc: any) {
+    public extractDimensions(doc: any) {
         return this.extractors.dimensions(doc);
     }
 }
