@@ -1,4 +1,4 @@
---require ./test/global.js
+--require ./build/test/global.js
 --reporter spec
 --ui bdd
 --recursive
@@ -7,3 +7,4 @@
 --slow 300
 --check-leaks
 --globals expect
+./build/**/*.spec.js

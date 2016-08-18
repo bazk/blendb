@@ -20,24 +20,29 @@
 
 'use strict';
 
-class Transformer {
-    constructor(name, options) {
-        this.source = options.source || null;
-        this.metrics = options.metrics || [];
-        this.dimensions = options.dimensions || [];
-        this.extractors = {
-            metrics: options.extractors.metrics || ((doc) => null),
-            dimensions: options.extractors.dimensions || ((doc) => null)
-        };
-    }
+import crypto = require('crypto');
 
-    extractMetrics(doc) {
-        return this.extractors.metrics(doc);
-    }
+export class Hash {
+    static sha1(...objects: any[]): string {
+        let hash = crypto.createHash('sha1');
 
-    extractDimensions(doc) {
-        return this.extractors.dimensions(doc);
+        objects
+            .map((obj) => {
+                switch (typeof obj) {
+                    case 'string':
+                        return obj;
+                    case 'object':
+                        return JSON.stringify(obj);
+                    default:
+                        throw new TypeError(typeof obj +
+                            ' cannot be hashed');
+                }
+            })
+            .sort()
+            .map((objStr) => {
+                hash.update(objStr);
+            });
+
+        return hash.digest('hex');
     }
 }
-
-module.exports = Transformer;

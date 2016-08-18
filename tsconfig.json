@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "pretty": true,
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "./build",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true
+  },
+  "exclude": [
+      "node_modules"
+  ],
+  "compileOnSave": false
+}

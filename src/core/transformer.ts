@@ -20,23 +20,27 @@
 
 'use strict';
 
-const MongoClient = require('mongodb').MongoClient;
+export class Transformer {
+    source: string;
+    metrics: string[];
+    dimensions: string[];
+    extractors: any;
 
-class Mongo {
-    constructor() {
-        this.db = undefined;
+    constructor(name: string, options: any) {
+        this.source = options.source || null;
+        this.metrics = options.metrics || [];
+        this.dimensions = options.dimensions || [];
+        this.extractors = {
+            metrics: options.extractors.metrics || ((doc: any): any => null),
+            dimensions: options.extractors.dimensions || ((doc: any): any => null)
+        };
     }
 
-    connect(connectionString) {
-        MongoClient.connect(connectionString, (err, db) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
+    extractMetrics(doc: any) {
+        return this.extractors.metrics(doc);
+    }
 
-            this.db = db;
-        });
+    extractDimensions(doc: any) {
+        return this.extractors.dimensions(doc);
     }
 }
-
-module.exports = new Mongo();

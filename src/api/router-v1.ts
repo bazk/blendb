@@ -18,12 +18,13 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
+const osprey = require('osprey');
 
-process.env.NODE_ENV = 'test';
+// import controllers
+import { DataCtrl } from './controllers/data';
+import { CollectCtrl } from './controllers/collect';
 
-global.expect = require('chai').expect;
+export const router = osprey.Router();
 
-// Add the ./src directory to require's search path to facilitate import
-// modules later on (avoiding the require('../../../../module') problem).
-require('app-module-path').addPath(__dirname + '/../src');
+router.get('/data', DataCtrl.read);
+router.post('/collect/{class}', CollectCtrl.write);

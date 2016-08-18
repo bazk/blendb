@@ -20,20 +20,24 @@
 
 'use strict';
 
-const hash = require('util/hash');
+import { Hash } from '../util/hash';
 
-const Source = require('core/source');
-const Transformer = require('core/transformer');
-const Aggregate = require('core/aggregate');
+import { Source } from './source';
+import { Transformer } from './transformer';
+import { Aggregate } from './aggregate';
 
-class BlenDB {
+export class Server {
+    sources: Map<string,Source>;
+    transformers: Map<string,Transformer>;
+    aggregates: Map<string,Aggregate>;
+
     constructor() {
         this.sources = new Map();
         this.transformers = new Map();
         this.aggregates = new Map();
     }
 
-    source(name, options) {
+    source(name: string, options?: any) {
         if (this.sources.has(name)) {
             return this.sources.get(name);
         }
@@ -44,7 +48,7 @@ class BlenDB {
         }
     }
 
-    transformer(name, options) {
+    transformer(name: string, options?: any) {
         if (this.transformers.has(name)) {
             return this.transformers.get(name);
         }
@@ -55,11 +59,8 @@ class BlenDB {
         }
     }
 
-    aggregate(metrics, dimensions, options) {
-        metrics = Array.from(metrics);
-        dimensions = Array.from(dimensions);
-
-        const id = hash.sha1(metrics.sort() + dimensions.sort());
+    aggregate(metrics: string[], dimensions: string[], options?: any) {
+        const id = Hash.sha1(metrics.sort(), dimensions.sort());
 
         if (this.aggregates.has(id)) {
             return this.aggregates.get(id);
@@ -72,12 +73,12 @@ class BlenDB {
     }
 
     process() {
-        this.transformers.forEach((transformer) => {
+        this.transformers.forEach((transformer: Transformer) => {
             const source = this.source(transformer.source);
             const aggr = this.aggregate(transformer.metrics,
                 transformer.dimensions);
 
-            source.forEach((doc) => {
+            source.forEach((doc: any) => {
                 aggr.push({
                     metrics: transformer.extractMetrics(doc),
                     dimensions: transformer.extractDimensions(doc)
@@ -93,5 +94,3 @@ class BlenDB {
         console.log(this.aggregates);
     }
 }
-
-module.exports = { BlenDB, Source, Transformer };

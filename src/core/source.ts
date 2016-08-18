@@ -20,28 +20,23 @@
 
 'use strict';
 
-const mongo = require('core/mongo');
+export class Source {
+    name: string;
+    data: any[];
 
-class Collect {
-    write(req, res, next) {
-        let collection = mongo.db.collection('raw.' + req.params.class);
+    constructor(name: string, options: any) {
+        this.name = name;
 
-        if ('_id' in req.body) {
-            res.status(400)
-                .json({ message: 'Property named \'_id\' is protected.' });
-            return;
-        }
+        this.data = [];
+    }
 
-        collection.insertOne(req.body, function (err, r) {
-            if (err) {
-                res.status(500)
-                    .json({ message: 'Error while writing to the database.' });
-                return;
-            }
+    push(doc: any) {
+        this.data.push(doc);
+    }
 
-            res.status(200).json({ _id: r.insertedId });
+    forEach(callback: Function) {
+        this.data.forEach((value: any, index: number, array: any[]) => {
+            callback(value);
         });
     }
 }
-
-module.exports = new Collect();

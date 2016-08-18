@@ -18,15 +18,4 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
-const osprey = require('osprey');
-
-// import controllers
-const data = require('./controllers/data');
-const collect = require('./controllers/collect');
-
-const router = module.exports = osprey.Router();
-
-router.get('/data', data.read);
-router.post('/collect/{class}', collect.write);
+process.env.NODE_ENV = 'test';

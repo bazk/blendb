@@ -18,22 +18,14 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
+import * as express from "express";
 
-class Source {
-    constructor(name, options) {
-        this.name = name;
+export class DataCtrl {
+    static read(req: express.Request, res: express.Response, next: express.NextFunction) {
+        let metrics = req.query.metrics.split(',');
+        let dimensions = req.query.dimensions.split(',');
 
-        this.data = [];
-    }
-
-    push(doc) {
-        this.data.push(doc);
-    }
-
-    forEach(callback) {
-        this.data.forEach(callback);
+        res.status(500).json({ message: 'Query execution failed ' +
+            'because of an unknown error.' });
     }
 }
-
-module.exports = Source;

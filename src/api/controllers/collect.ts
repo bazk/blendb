@@ -18,33 +18,17 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
+import * as express from "express";
 
-const crypto = require('crypto');
+export class CollectCtrl {
+    static write(req: express.Request, res: express.Response, next: express.NextFunction) {
+        if ('_id' in req.body) {
+            res.status(400)
+                .json({ message: 'Property named \'_id\' is protected.' });
+            return;
+        }
 
-class Hash {
-    sha1(...objects) {
-        let hash = crypto.createHash('sha1');
-
-        objects
-            .map((obj) => {
-                switch (typeof obj) {
-                    case 'string':
-                        return obj;
-                    case 'object':
-                        return JSON.stringify(obj);
-                    default:
-                        throw new TypeError(typeof obj +
-                            ' cannot be hashed');
-                }
-            })
-            .sort()
-            .map((objStr) => {
-                hash.update(objStr);
-            });
-
-        return hash.digest('hex');
+        res.status(500)
+            .json({ message: 'Error while writing to the database.' });
     }
 }
-
-module.exports = new Hash();

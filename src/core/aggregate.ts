@@ -18,17 +18,19 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
+export class Aggregate {
+    metrics: string[];
+    dimensions: string[];
+    data: any[];
 
-class Aggregate {
-    constructor(metrics, dimensions, options) {
+    constructor(metrics: string[], dimensions: string[], options?: any) {
         this.metrics = metrics;
         this.dimensions = dimensions;
 
         this.data = [];
     }
 
-    push(data) {
+    push(data: any) {
         this.data.push(data);
     }
 
@@ -36,5 +38,3 @@ class Aggregate {
         this.data = [];
     }
 }
-
-module.exports = Aggregate;

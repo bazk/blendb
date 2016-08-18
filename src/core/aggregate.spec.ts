@@ -18,26 +18,23 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
+import { expect } from 'chai';
 
-const aggregator = require('core/aggregator');
+import { Aggregate } from './aggregate';
 
-class Data {
-    read(req, res, next) {
-        let metrics = req.query.metrics.split(',');
-        let dimensions = req.query.dimensions.split(',');
+describe('aggregate class', () => {
+    it('should be instantiated with an array metrics and one of dimensions', () => {
+        let aggr = new Aggregate(['met:one'], ['dim:one', 'dim:two']);
+        expect(aggr).to.be.an('object');
+    });
 
-        aggregator.query(metrics, dimensions, (err, data) => {
-            if (err) {
-                console.error(err);
-                res.status(500).json({ message: 'Query execution failed ' +
-                    'because of an unknown error.' });
-                return;
-            }
+    it('should not be instantiated with an empty array of metrics', () => {
+        let aggr = new Aggregate([], ['dim:one', 'dim:two']);
+        expect(aggr).to.be.an('object');
+    });
 
-            res.json({ data });
-        });
-    }
-}
-
-module.exports = new Data();
+    it('should not be instantiated with an empty array of dimensions', () => {
+        let aggr = new Aggregate(['met:one'], []);
+        expect(aggr).to.be.an('object');
+    });
+});

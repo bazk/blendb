@@ -4,7 +4,10 @@
   "description": "BlenDB",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prestart": "tsc",
+    "start": "node build/src/boot",
+    "pretest": "tsc",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -31,7 +34,9 @@
     "jshint": "^2.9.2",
     "mongodb": "^2.2.5",
     "osprey": "^0.3.2",
-    "raml2html": "^2.4.0"
+    "raml2html": "^2.4.0",
+    "typescript": "^1.8.10",
+    "typings": "^1.3.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
