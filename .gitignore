@@ -1,8 +1,7 @@
 *.log
 *.out
 *.pid
-*.js
-*.js.map
+*.map
 /.trash
 /pids
 /logs

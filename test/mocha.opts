@@ -1,4 +1,4 @@
---require ./build/test/global.js
+--require ./test/global.ts
 --reporter spec
 --ui bdd
 --recursive
@@ -7,4 +7,5 @@
 --slow 300
 --check-leaks
 --globals expect
-./build/**/*.spec.js
+--compilers ts:ts-node/register
+./src/**/*.spec.ts
