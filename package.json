@@ -4,6 +4,7 @@
   "description": "BlenDB",
   "main": "index.js",
   "scripts": {
+    "postinstall": "typings install",
     "prestart": "tsc",
     "start": "node build/src/boot",
     "pretest": "tsc",
