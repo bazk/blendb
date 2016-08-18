@@ -22,15 +22,14 @@
 // external libraries
 import express = require('express');
 import path = require('path');
-
 const osprey = require('osprey');
 const ramlParser = require('raml-parser');
 
-// create a new express app
-const app = module.exports = express();
-
 // load router
 import { router } from './api/router-v1';
+
+// create a new express app
+const app = module.exports = express();
 
 // parse the RAML spec and load osprey middleware
 ramlParser.loadFile('specs/blendb-api-v1.raml')
