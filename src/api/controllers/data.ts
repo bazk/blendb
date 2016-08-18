@@ -21,7 +21,7 @@
 import * as express from "express";
 
 export class DataCtrl {
-    static read(req: express.Request, res: express.Response, next: express.NextFunction) {
+    public static read(req: express.Request, res: express.Response, next: express.NextFunction) {
         let metrics = req.query.metrics.split(",");
         let dimensions = req.query.dimensions.split(",");
 

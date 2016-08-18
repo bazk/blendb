@@ -21,7 +21,6 @@
 
 // external libraries
 import express = require("express");
-import path = require("path");
 const osprey = require("osprey");
 const ramlParser = require("raml-parser");
 
