@@ -18,19 +18,32 @@
  * along with blendb.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export interface ITransformerOptions {
+    source: string;
+    metrics: string[];
+    dimensions: string[];
+    extractors: {
+        metrics: (doc: any) => any;
+        dimensions: (doc: any) => any;
+    };
+}
+
 export class Transformer {
+    public name: string;
     public source: string;
     public metrics: string[];
     public dimensions: string[];
     private extractors: any;
 
-    constructor(name: string, options: any) {
-        this.source = options.source || null;
-        this.metrics = options.metrics || [];
-        this.dimensions = options.dimensions || [];
+    constructor(name: string, options: ITransformerOptions) {
+        this.name = name;
+
+        this.source = options.source;
+        this.metrics = options.metrics;
+        this.dimensions = options.dimensions;
         this.extractors = {
-            metrics: options.extractors.metrics || ((doc: any): any => null),
-            dimensions: options.extractors.dimensions || ((doc: any): any => null)
+            metrics: options.extractors.metrics,
+            dimensions: options.extractors.dimensions
         };
     }
 

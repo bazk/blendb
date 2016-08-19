@@ -21,7 +21,7 @@
 import { Hash } from "../util/hash";
 
 import { Source } from "./source";
-import { Transformer } from "./transformer";
+import { Transformer, ITransformerOptions } from "./transformer";
 import { Aggregate } from "./aggregate";
 
 export class Server {
@@ -46,14 +46,22 @@ export class Server {
         }
     }
 
-    public transformer(name: string, options?: any) {
-        if (this.transformers.has(name)) {
-            return this.transformers.get(name);
-        }
-        else {
+    public transformer(name: string, options?: ITransformerOptions) {
+        if (typeof options !== "undefined") {
+            if (this.transformers.has(name)) {
+                throw new Error("A transformer named '" + name + "' already exists");
+            }
+
             const transformer = new Transformer(name, options);
             this.transformers.set(name, transformer);
             return transformer;
+        }
+        else {
+            if (!this.transformers.has(name)) {
+                throw new Error("A transformer named '" + name + "' does not exist");
+            }
+
+            return this.transformers.get(name);
         }
     }
 
