@@ -6,8 +6,8 @@
   "scripts": {
     "postinstall": "typings install",
     "start": "node index",
-    "test": "istanbul cover -x \"**/*.spec.ts\" -e .ts _mocha",
-    "lint": "tslint -s node_modules/tslint-stylish -t stylish src/**/*.ts test/**/*.ts"
+    "pretest": "tslint -s node_modules/tslint-stylish -t stylish src/**/*.ts test/**/*.ts",
+    "test": "istanbul cover -x \"**/*.spec.ts\" -e .ts _mocha"
   },
   "repository": {
     "type": "git",
